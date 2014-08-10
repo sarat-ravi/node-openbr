@@ -3,5 +3,22 @@
     "description": "OpenBR bindings for Node.js",
     "author": "Sarat Tallamraju <sarattallamraju@gmail.com>",
     "version": "0.0.1",
-    "main": "./build/Release/openbr"
+    "main": "./build/Release/openbr",
+    "engines": {
+        "node": ">=0.4.1"
+    },
+    "license": "MIT",
+    "scripts": {
+        "build": "node-gyp build"
+    },
+    "keywords": [
+        "openbr",
+        "opencv",
+        "biometrics",
+        "face detection"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sarattall/node-openbr.git"
+    }
 }
