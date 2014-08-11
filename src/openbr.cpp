@@ -1,32 +1,65 @@
 #include <node.h>
-
-// C standard library
 #include <cstdlib>
 #include <ctime>
+#include <string>
+
+#include "FaceRecognizer.h"
 
 using namespace v8;
+using namespace std;
 
-Handle<Value> Version(const Arguments& args) {
-    // At the top of every function that uses anything about v8, include a
-    // definition like this. It ensures that any v8 handles you create in that
-    // function are properly cleaned up. If you see memory rising in your
-    // application, chances are that a scope isn't properly cleaned up.
+
+/**
+ * Gets string from arg at given index, or NULL otherwise.
+ */
+string getString(const Arguments& args, int index) {
+	if (args.Length() < index + 1) {
+		return NULL;
+	}
+
+	if (args[index]->IsString()) {
+		Local<Value> localValue = args[index];
+		Local<String> localString = localValue->ToString();
+		String::Utf8Value utf8(localString);
+		string str = string(*utf8);
+		return str;
+	}
+
+	return NULL;
+}
+
+
+/**
+ * Returns the version of the OpenBR installed.
+ */
+Handle<Value> version(const Arguments& args) {
     HandleScope scope;
-
-    // When returning a value from a function, make sure to wrap it in
-    // scope.Close(). This ensures that the handle stays valid after the current
-    // scope (declared with the previous statement) is cleaned up.
     return scope.Close(
         String::New("0.0.1")
     );
 }
 
-void RegisterModule(Handle<Object> target) {
-    srand(time(NULL));
+Handle<Value> compareFaces(const Arguments& args) {
+    HandleScope scope;
 
+    string fileA = getString(args, 0);
+    string fileB = getString(args, 1);
+
+    FaceRecognizer faceRecognizer = FaceRecognizer();
+    double score = faceRecognizer.compare(fileA, fileB);
+
+    return scope.Close(
+    	Number::New(score)
+    );
+}
+
+void RegisterModule(Handle<Object> target) {
     // target is the module object you see when require()ing the .node file.
     target->Set(String::NewSymbol("version"),
-        FunctionTemplate::New(Version)->GetFunction());
+        FunctionTemplate::New(version)->GetFunction());
+
+    target->Set(String::NewSymbol("compareFaces"),
+        FunctionTemplate::New(compareFaces)->GetFunction());
 }
 
 NODE_MODULE(openbr, RegisterModule);
