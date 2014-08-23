@@ -6,6 +6,7 @@
  */
 
 #include "FaceRecognizer.h"
+#include "Log.h"
 //#include <openbr/openbr_plugin.h>
 
 using namespace std;
@@ -19,6 +20,7 @@ FaceRecognizer::~FaceRecognizer() {
 }
 
 double FaceRecognizer::compare(string fileA, string fileB) {
+	Log::i("Comparing face '" + fileA + "' with '" + fileB + "'");
 	return 0.001;
 }
 

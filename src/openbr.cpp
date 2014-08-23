@@ -31,6 +31,7 @@ string getString(const Arguments& args, int index) {
 
 /**
  * Returns the version of the OpenBR installed.
+ * TODO: Actually implement this.
  */
 Handle<Value> version(const Arguments& args) {
     HandleScope scope;

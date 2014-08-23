@@ -24,6 +24,7 @@ public:
 	 */
 	double compare(string fileA, string fileB);
 
+private:
 };
 
 #endif /* FACERECOGNIZER_H_ */
